@@ -17,5 +17,5 @@ CMD ["app.handler"]
 ```
 
 ### 说明
-aws-lambda-ric 文件夹内是 aws-lambda-ric@3.0.0 版本，如果二次打包镜像无法下载到 aws-lambda-ric，可以将 aws-lambda-ric 复制到镜像中。
-
+1. aws-lambda-ric 文件夹内是 aws-lambda-ric@3.0.0 版本，如果二次打包镜像无法下载到 aws-lambda-ric，可以将 aws-lambda-ric 复制到镜像中。
+2. 构建镜像时务必要打成 --platform linux/amd64 架构，示例：docker build --platform linux/amd64 -t docker-image:test .
