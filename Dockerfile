@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/clickapaas/playwright:v1.26.1-focal-amd64
+FROM registry.cn-hangzhou.aliyuncs.com/clickapaas/playwright:v1.39.0-focal
 
 # 更改 apt-get 源，在国内环境阿里云的源安装比较快
 RUN cp -ra /etc/apt/sources.list /etc/apt/sources.list.bak && \
@@ -11,7 +11,6 @@ RUN apt-get update && \
     g++ \
     make \
     cmake \
-    nodejs \
     unzip \
     libtool \
     autoconf \
@@ -22,8 +21,8 @@ RUN apt-get update && \
 # 具体来说，当一个Lambda函数被触发时，Lambda服务会通过调用RIC来启动并运行函数。RIC负责接收Lambda运行时的指令，并执行函数的代码逻辑、处理事件输入以及生成函数的响应结果。同时，它还负责与Lambda服务之间的通信，将函数的请求和响应传递给Lambda服务进行处理。
 # 总之，lambda aws-lambda-ric在AWS Lambda中充当着连接Lambda函数和Lambda运行时之间的桥梁，负责函数的执行和与Lambda服务的通信。
 # 如果使用了官方镜像可以不使用 aws-lambda-ric，eg.public.ecr.aws/lambda/nodejs:18
-WORKDIR /aws-lambda-ric
-RUN npm config set registry https://registry.npm.taobao.org && npm i yarn -g && yarn && yarn add aws-lambda-ric && yarn global add n
 
+WORKDIR /aws-lambda-ric
+COPY aws-lambda-ric ./
 
 

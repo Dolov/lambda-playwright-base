@@ -6,14 +6,14 @@
 
 ### 使用示例
 ```Dockerfile
-FROM registry.cn-hangzhou.aliyuncs.com/clickapaas/lambda-playwright-base:v1.26.1-focal-amd64
+FROM registry.cn-hangzhou.aliyuncs.com/clickapaas/lambda-playwright-base:v1.39.0-focal
 
-WORKDIR /function
-COPY app.js package.json ./
-RUN mv ../aws-lambda-ric  ./aws-lambda-ric
-
-ENTRYPOINT ["aws-lambda-ric/node_modules/.bin/aws-lambda-ric"]
-CMD ["app.handler"]
+WORKDIR /APP
+COPY index.js package.json ./
+RUN mv ../aws-lambda-ric ./aws-lambda-ric
+RUN npm config set registry https://registry.npm.taobao.org && npm i yarn -g && yarn
+ENTRYPOINT ["node", "aws-lambda-ric/aws-lambda-ric/bin/index.mjs"]
+CMD ["index.handler"]
 ```
 
 ### 说明
