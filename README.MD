@@ -14,8 +14,25 @@ RUN mv ../aws-lambda-ric ./aws-lambda-ric
 RUN npm config set registry https://registry.npm.taobao.org && npm i yarn -g && yarn
 ENTRYPOINT ["node", "aws-lambda-ric/aws-lambda-ric/bin/index.mjs"]
 CMD ["index.handler"]
+
 ```
 
 ### 说明
-1. aws-lambda-ric 文件夹内是 aws-lambda-ric@3.0.0 版本，如果二次打包镜像无法下载到 aws-lambda-ric，可以将 aws-lambda-ric 复制到镜像中。
+1. aws-lambda-ric 文件夹内是 aws-lambda-ric@3.0.0 版本。如果需要其他版本，可以自行下载、或者在 Dockerfile 中自行安装。
 2. 构建镜像时务必要打成 --platform linux/amd64 架构，示例：docker build --platform linux/amd64 -t docker-image:test .
+3. 启动 chrome 时的必要参数，否则在 lambda 环境会异常报错。
+```js
+const browser = await chromium.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--single-process']
+})
+```
+4. lambda 环境默认只有 /tmp 文件夹有写入权限。
+5. 如果要生成测试报告，需要指定输入目录。
+```js
+const cmd = 'PLAYWRIGHT_HTML_REPORT=/tmp/html-report node node_modules/.bin/playwright test --output=/tmp/test-results'
+child_process.exec(cmd, (error, stdout) => {
+    console.log('stdout: ', stdout);
+    console.log('error: ', error);
+})
+```
